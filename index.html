@@ -4,26 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Ímpar Marketing — Marketing que Gera Impacto</title>
-  <meta name="description" content="Agência de marketing digital focada em resultados. Tráfego pago, social media, branding, IA e estratégia de vendas para fazer sua marca crescer de verdade.">
+  <meta name="description" content="Agência de marketing digital focada em resultados reais. Tráfego pago, social media, branding, IA e estratégia de vendas.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #0c0b09;
-      --s1:      #121009;
-      --s2:      #1c1a14;
-      --s3:      #242017;
-      --gold:    #c8a97c;
-      --gold-l:  #e8d3a8;
-      --gold-d:  #9e8054;
-      --text:    #f0ebe2;
-      --muted:   #7a7060;
-      --muted2:  #9e9484;
-      --border:  rgba(200,169,124,.12);
-      --border2: rgba(200,169,124,.22);
-      --wa:      #25d366;
-      --r:       14px;
+      --bg:     #0c0b09;
+      --s1:     #121009;
+      --s2:     #1c1a14;
+      --gold:   #c8a97c;
+      --gold-l: #e8d3a8;
+      --gold-d: #9e8054;
+      --text:   #f0ebe2;
+      --muted:  #7a7060;
+      --mut2:   #9e9484;
+      --border: rgba(200,169,124,.12);
+      --bord2:  rgba(200,169,124,.24);
+      --wa:     #25d366;
+      --r:      14px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -32,26 +31,36 @@
       background: var(--bg); color: var(--text);
       overflow-x: hidden; -webkit-font-smoothing: antialiased;
     }
-    h1,h2,h3,h4,h5 { font-family: 'Space Grotesk', sans-serif; }
-    a { color: inherit; }
-    .gold-grad {
-      background: linear-gradient(135deg, var(--gold-l) 0%, var(--gold) 50%, var(--gold-d) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+    h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; }
+
+    /* ═══ PROGRESS BAR ═══ */
+    #prog {
+      position: fixed; top: 0; left: 0; height: 2px; width: 0;
+      background: linear-gradient(90deg, var(--gold-d), var(--gold-l));
+      z-index: 9999; transition: width .08s;
+      box-shadow: 0 0 8px rgba(200,169,124,.6);
     }
 
-    /* ═══════════════════════════════════════
-       NAV
-    ═══════════════════════════════════════ */
+    /* ═══ CURSOR GLOW ═══ */
+    #cursor-glow {
+      position: fixed; pointer-events: none; z-index: 9998;
+      width: 360px; height: 360px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,124,.055) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: left .12s ease-out, top .12s ease-out;
+      will-change: left, top;
+    }
+
+    /* ═══ NAV ═══ */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      padding: 0 48px; height: 72px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      height: 70px; padding: 0 48px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(12,11,9,.9); backdrop-filter: blur(24px);
+      background: rgba(12,11,9,.88); backdrop-filter: blur(28px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo img { height: 36px; display: block; object-fit: contain; }
-    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-logo img { height: 32px; display: block; }
+    .nav-links { display: flex; gap: 34px; list-style: none; }
     .nav-links a {
       font-size: 13px; font-weight: 500; color: var(--muted);
       text-decoration: none; letter-spacing: .5px; transition: color .2s;
@@ -60,387 +69,441 @@
     .nav-btn {
       display: flex; align-items: center; gap: 8px;
       background: var(--gold); color: #0c0b09;
-      padding: 10px 24px; border-radius: 100px;
+      padding: 10px 22px; border-radius: 100px;
       font-size: 13px; font-weight: 700; letter-spacing: .4px;
       text-decoration: none; transition: background .2s, transform .2s;
     }
     .nav-btn:hover { background: var(--gold-l); transform: translateY(-1px); }
-    .nav-btn svg { width: 14px; height: 14px; }
 
-    /* ═══════════════════════════════════════
-       HERO
-    ═══════════════════════════════════════ */
+    /* ═══ HERO ═══ */
     .hero {
       min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 120px 32px 80px;
+      text-align: center; padding: 120px 32px 90px;
       position: relative; overflow: hidden;
     }
-    .hero::before {
-      content: '';
+    /* Particles canvas */
+    #particles {
       position: absolute; inset: 0;
+      pointer-events: none; z-index: 0;
+    }
+    /* Rotating seals */
+    .seal-wrap {
+      position: absolute; border-radius: 50%; overflow: hidden;
+      pointer-events: none; z-index: 0;
+    }
+    .seal-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: sepia(.9) brightness(1.6) contrast(.85);
+    }
+    .seal-1 {
+      width: 720px; height: 720px;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      opacity: .055;
+      animation: rot 100s linear infinite;
+    }
+    .seal-2 {
+      width: 980px; height: 980px;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      opacity: .025;
+      animation: rot 140s linear infinite reverse;
+    }
+    @keyframes rot { to { transform: translate(-50%,-50%) rotate(360deg); } }
+    /* Grid */
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
       background-image:
-        linear-gradient(rgba(200,169,124,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200,169,124,.04) 1px, transparent 1px);
-      background-size: 64px 64px;
-      pointer-events: none;
+        linear-gradient(rgba(200,169,124,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,169,124,.035) 1px, transparent 1px);
+      background-size: 72px 72px;
     }
-    .hero::after {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 55% 45% at 50% 50%, rgba(200,169,124,.08) 0%, transparent 70%),
-        radial-gradient(ellipse 80% 30% at 20% 90%, rgba(200,169,124,.04) 0%, transparent 70%);
-      animation: heroGlow 7s ease-in-out infinite alternate;
-      pointer-events: none;
+    /* Edge fade vignette */
+    .hero-vignette {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 50%, var(--bg) 100%);
     }
-    @keyframes heroGlow { 0%{opacity:.6} 100%{opacity:1} }
-    .hero-inner { position: relative; z-index: 1; max-width: 960px; }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: 11px; font-weight: 600; letter-spacing: 4px;
-      text-transform: uppercase; color: var(--gold);
-      margin-bottom: 36px;
-      border: 1px solid var(--border2);
-      padding: 7px 18px; border-radius: 100px;
-      background: rgba(200,169,124,.06);
+    /* Hero content */
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 860px; width: 100%;
     }
-    .hero-tag-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--gold); animation: pulse 2s ease-in-out infinite;
+    /* Prominent logo */
+    .hero-brand {
+      margin-bottom: 44px;
     }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+    .hero-brand img {
+      height: 72px; width: auto;
+      display: block; margin: 0 auto;
+      filter: drop-shadow(0 0 28px rgba(200,169,124,.22));
+    }
+    /* Gold divider line */
+    .gold-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      margin: 0 auto 44px;
+    }
+    /* Headline */
     .hero h1 {
-      font-size: clamp(42px, 6.5vw, 96px);
-      font-weight: 700; line-height: 1.0;
-      letter-spacing: -3px; margin-bottom: 12px;
+      font-size: clamp(44px, 6.8vw, 96px);
+      font-weight: 700; line-height: .98;
+      letter-spacing: -3.5px; margin-bottom: 10px;
     }
     .typerow {
       display: block;
-      font-size: clamp(40px, 6.2vw, 92px);
-      font-weight: 700; line-height: 1.0; letter-spacing: -3px;
+      font-size: clamp(42px, 6.5vw, 92px);
+      font-weight: 700; line-height: .98;
+      letter-spacing: -3.5px; margin-bottom: 36px;
     }
-    #typeword {
+    #tw {
       color: var(--gold);
       border-right: 3px solid var(--gold);
-      padding-right: 4px;
+      padding-right: 5px;
       animation: blink .75s step-end infinite;
+      filter: drop-shadow(0 0 14px rgba(200,169,124,.5));
     }
     @keyframes blink { 0%,100%{border-color:var(--gold)} 50%{border-color:transparent} }
     .hero-sub {
-      font-size: 18px; line-height: 1.7; color: var(--muted2);
-      max-width: 560px; margin: 28px auto 48px;
+      font-size: 17px; line-height: 1.75; color: var(--mut2);
+      max-width: 520px; margin: 0 auto 52px;
     }
-    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    /* Shimmer text */
+    @keyframes shimmer { 0%{background-position:-250% center} 100%{background-position:250% center} }
+    .shimmer {
+      background: linear-gradient(90deg, var(--gold-d) 15%, var(--gold-l) 50%, var(--gold-d) 85%);
+      background-size: 250% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 5s linear infinite;
+    }
+    /* CTAs */
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
     .btn-gold {
       display: inline-flex; align-items: center; gap: 10px;
-      background: var(--gold); color: #0c0b09;
-      padding: 17px 36px; border-radius: 100px;
+      background: var(--gold); color: #0a0906;
+      padding: 17px 38px; border-radius: 100px;
       font-size: 15px; font-weight: 700; letter-spacing: .3px;
       text-decoration: none;
-      box-shadow: 0 8px 36px rgba(200,169,124,.3);
-      transition: background .2s, transform .2s, box-shadow .2s;
+      box-shadow: 0 8px 40px rgba(200,169,124,.32);
+      transition: background .25s, box-shadow .25s;
+      will-change: transform;
     }
-    .btn-gold:hover { background: var(--gold-l); transform: translateY(-3px); box-shadow: 0 14px 48px rgba(200,169,124,.42); }
+    .btn-gold:hover {
+      background: var(--gold-l);
+      box-shadow: 0 16px 56px rgba(200,169,124,.48);
+    }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
-      border: 1.5px solid var(--border2); color: var(--muted2);
-      padding: 16px 30px; border-radius: 100px;
-      font-size: 15px; font-weight: 500; text-decoration: none;
-      transition: border-color .2s, color .2s;
+      border: 1.5px solid var(--bord2); color: var(--mut2);
+      padding: 16px 32px; border-radius: 100px;
+      font-size: 15px; font-weight: 500;
+      text-decoration: none; transition: border-color .2s, color .2s;
+      will-change: transform;
     }
     .btn-ghost:hover { border-color: var(--gold); color: var(--text); }
-    .hero-scroll {
-      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    /* Scroll indicator */
+    .scroll-ind {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%); z-index: 2;
       display: flex; flex-direction: column; align-items: center; gap: 8px;
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted);
     }
-    .hero-scroll-line {
-      width: 1px; height: 48px;
+    .scroll-ind-line {
+      width: 1px; height: 52px;
       background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollLine 1.8s ease-in-out infinite;
+      animation: scrollPulse 2s ease-in-out infinite;
     }
-    @keyframes scrollLine {
-      0%{transform:scaleY(0);transform-origin:top;opacity:1}
-      50%{transform:scaleY(1);transform-origin:top;opacity:1}
-      100%{transform:scaleY(1);transform-origin:bottom;opacity:0}
+    @keyframes scrollPulse {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
     }
 
-    /* ═══════════════════════════════════════
-       TRUST STRIP
-    ═══════════════════════════════════════ */
-    .trust-strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--s1); }
-    .trust-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
-    .trust-item {
-      padding: 28px 24px; border-right: 1px solid var(--border);
-      display: flex; align-items: center; gap: 14px;
-    }
-    .trust-item:last-child { border-right: none; }
-    .trust-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 28px; font-weight: 700; line-height: 1;
-      background: linear-gradient(135deg, var(--gold-l), var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .trust-label { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
-
-    /* ═══════════════════════════════════════
-       SECTIONS COMMONS
-    ═══════════════════════════════════════ */
+    /* ═══ SERVICES ═══ */
     section { padding: 100px 32px; }
     .sec { max-width: 1100px; margin: 0 auto; }
-    .sec-tag {
+    .sec-eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
       font-size: 11px; font-weight: 600; letter-spacing: 4px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
     }
-    .sec-tag::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
-    .sec-title { font-size: clamp(32px,4vw,56px); font-weight: 700; line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 16px; }
-    .sec-desc { font-size: 16px; line-height: 1.75; color: var(--muted2); max-width: 520px; }
-
-    /* ═══════════════════════════════════════
-       SERVICES — INTERACTIVE CARDS
-    ═══════════════════════════════════════ */
+    .sec-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+    .sec-title {
+      font-size: clamp(32px,4vw,56px); font-weight: 700;
+      line-height: 1.04; letter-spacing: -1.5px; margin-bottom: 14px;
+    }
+    .sec-desc { font-size: 16px; line-height: 1.75; color: var(--mut2); }
     .services-head {
       display: flex; align-items: flex-end; justify-content: space-between;
       gap: 32px; margin-bottom: 52px; flex-wrap: wrap;
     }
-    .services-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .services-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+    /* Card */
     .scard {
       position: relative; overflow: hidden;
       background: var(--s1); border: 1px solid var(--border);
       border-radius: var(--r); cursor: pointer;
-      transition: border-color .3s, box-shadow .3s;
-      user-select: none;
+      transition: border-color .35s, box-shadow .35s;
     }
     .scard:hover {
-      border-color: var(--border2);
-      box-shadow: 0 12px 48px rgba(200,169,124,.1), 0 0 0 1px rgba(200,169,124,.08);
+      border-color: var(--bord2);
+      box-shadow: 0 12px 52px rgba(200,169,124,.09), inset 0 0 0 1px rgba(200,169,124,.07);
     }
+    /* Animated top line */
     .scard-line {
-      height: 2px; width: 0;
-      background: linear-gradient(90deg, var(--gold), var(--gold-l));
-      transition: width .5s cubic-bezier(.16,1,.3,1);
-      position: absolute; top: 0; left: 0;
+      height: 2px; width: 0; position: absolute; top: 0; left: 0;
+      background: linear-gradient(90deg, var(--gold-d), var(--gold-l), var(--gold-d));
+      background-size: 200% auto;
+      animation: lineShine 2.5s linear infinite;
+      animation-play-state: paused;
+      transition: width .55s cubic-bezier(.16,1,.3,1);
     }
-    .scard:hover .scard-line,
-    .scard.open   .scard-line { width: 100%; }
-    .scard-front { padding: 32px 28px 28px; min-height: 200px; display: flex; flex-direction: column; }
+    @keyframes lineShine { to { background-position: -200% center; } }
+    .scard:hover .scard-line, .scard.open .scard-line { width: 100%; animation-play-state: running; }
+    /* Front */
+    .scard-front { padding: 30px 26px 26px; min-height: 196px; display: flex; flex-direction: column; }
     .scard-icon {
-      width: 48px; height: 48px; margin-bottom: 20px;
+      width: 48px; height: 48px; margin-bottom: 18px;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(200,169,124,.08); border: 1px solid var(--border); border-radius: 12px;
-      transition: background .3s, border-color .3s;
+      background: rgba(200,169,124,.07); border: 1px solid var(--border); border-radius: 12px;
+      transition: background .3s, border-color .3s, box-shadow .3s;
     }
-    .scard:hover .scard-icon,
-    .scard.open   .scard-icon { background: rgba(200,169,124,.14); border-color: var(--border2); }
+    .scard:hover .scard-icon, .scard.open .scard-icon {
+      background: rgba(200,169,124,.13); border-color: var(--bord2);
+      box-shadow: 0 0 18px rgba(200,169,124,.12);
+    }
     .scard-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-    .scard-name { font-size: 16px; font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+    .scard-name { font-size: 16px; font-weight: 700; line-height: 1.2; }
     .scard-hint {
       font-size: 11px; color: var(--muted); letter-spacing: .3px;
       display: flex; align-items: center; gap: 6px;
-      margin-top: auto; padding-top: 16px; transition: color .2s;
+      margin-top: auto; padding-top: 16px; transition: color .25s;
     }
     .scard:hover .scard-hint { color: var(--gold); }
     .scard-hint::before { content: ''; flex: 1; height: 1px; background: var(--border); }
+    /* Hover back */
     .scard-back {
       position: absolute; inset: 0;
-      background: linear-gradient(160deg, rgba(18,16,9,.97) 0%, rgba(12,11,9,.99) 100%);
-      padding: 28px; display: flex; flex-direction: column; justify-content: flex-end;
+      background: linear-gradient(155deg, rgba(22,19,12,.97) 0%, rgba(12,11,9,.99) 100%);
+      padding: 26px; display: flex; flex-direction: column; justify-content: flex-end;
       transform: translateY(100%);
-      transition: transform .45s cubic-bezier(.16,1,.3,1);
+      transition: transform .48s cubic-bezier(.16,1,.3,1);
       border-radius: var(--r);
     }
-    .scard:hover .scard-back,
-    .scard.open   .scard-back { transform: translateY(0); }
-    .scard-back-name { font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: .3px; margin-bottom: 10px; text-transform: uppercase; }
-    .scard-back-desc { font-size: 13.5px; line-height: 1.65; color: var(--muted2); margin-bottom: 20px; }
-    .scard-cta {
-      display: inline-flex; align-items: center; gap: 7px;
+    .scard:hover .scard-back, .scard.open .scard-back { transform: translateY(0); }
+    .scard-back-name {
       font-size: 12px; font-weight: 700; color: var(--gold);
-      letter-spacing: .4px; text-decoration: none; text-transform: uppercase;
-      border-top: 1px solid var(--border); padding-top: 16px; transition: gap .2s;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px;
     }
-    .scard-cta:hover { gap: 12px; }
+    .scard-back-desc { font-size: 13.5px; line-height: 1.65; color: var(--mut2); margin-bottom: 20px; }
+    .scard-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; color: var(--gold);
+      letter-spacing: .5px; text-transform: uppercase; text-decoration: none;
+      border-top: 1px solid rgba(200,169,124,.15); padding-top: 16px;
+      transition: gap .2s, color .2s;
+    }
+    .scard-cta:hover { gap: 14px; color: var(--gold-l); }
+    /* Glare */
     .scard-glare {
-      position: absolute; inset: 0;
-      background: radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(200,169,124,.07) 0%, transparent 55%);
-      pointer-events: none; opacity: 0; transition: opacity .3s; border-radius: var(--r);
+      position: absolute; inset: 0; pointer-events: none; border-radius: var(--r);
+      background: radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(200,169,124,.065) 0%, transparent 55%);
+      opacity: 0; transition: opacity .3s;
     }
     .scard:hover .scard-glare { opacity: 1; }
 
-    /* ═══════════════════════════════════════
-       IA SECTION
-    ═══════════════════════════════════════ */
-    .ia-section { background: var(--s1); }
+    /* ═══ IA SECTION ═══ */
+    .ia-sec { background: var(--s1); position: relative; overflow: hidden; }
+    .ia-sec::before {
+      content: '';
+      position: absolute; top: -200px; right: -200px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,124,.06), transparent 70%);
+      pointer-events: none;
+    }
     .ia-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .ia-badge {
       display: inline-flex; align-items: center; gap: 7px;
-      background: rgba(200,169,124,.07); border: 1px solid var(--border2);
+      background: rgba(200,169,124,.07); border: 1px solid var(--bord2);
       color: var(--gold); padding: 6px 16px; border-radius: 100px;
       font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
       text-transform: uppercase; margin-bottom: 20px;
     }
-    .ia-list { list-style: none; margin-top: 32px; }
+    .ia-list { list-style: none; margin-top: 30px; }
     .ia-list li {
-      display: flex; align-items: flex-start; gap: 14px;
+      display: flex; gap: 14px;
       padding: 16px 0; border-bottom: 1px solid var(--border);
-      font-size: 15px; line-height: 1.6; color: var(--muted2);
+      font-size: 14.5px; line-height: 1.65; color: var(--mut2);
     }
     .ia-list li:last-child { border-bottom: none; }
-    .ia-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 9px; }
-    .ia-visual {
+    .ia-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 9px; }
+    .ia-card {
       background: var(--s2); border: 1px solid var(--border);
-      border-radius: 24px; padding: 40px 36px;
+      border-radius: 24px; padding: 40px 34px;
       position: relative; overflow: hidden;
     }
-    .ia-visual::before {
+    .ia-card::after {
       content: 'IA';
-      position: absolute; bottom: -20px; right: -8px;
+      position: absolute; bottom: -30px; right: -10px;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 160px; font-weight: 900; line-height: 1;
+      font-size: 170px; font-weight: 900; line-height: 1;
       color: rgba(200,169,124,.04); pointer-events: none;
       letter-spacing: -8px; user-select: none;
     }
-    .ia-vis-tag { font-size: 11px; font-weight: 600; letter-spacing: 3.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
-    .ia-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    /* Seal watermark in IA section */
+    .ia-card::before {
+      content: none;
+    }
+    .ia-seal {
+      position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px; border-radius: 50%; overflow: hidden;
+      opacity: .04; pointer-events: none;
+    }
+    .ia-seal img { width: 100%; height: 100%; object-fit: cover; filter: sepia(1) brightness(2); }
+    .ia-vis-lbl { font-size: 11px; font-weight: 600; letter-spacing: 3.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 26px; }
+    .ia-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
     .ia-stat {
       background: var(--s1); border: 1px solid var(--border);
-      border-radius: 14px; padding: 24px 20px;
-      transition: border-color .3s;
+      border-radius: 13px; padding: 22px 18px; transition: border-color .3s;
     }
-    .ia-stat:hover { border-color: var(--border2); }
+    .ia-stat:hover { border-color: var(--bord2); }
     .ia-stat-val {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 36px; font-weight: 700; line-height: 1;
+      font-size: 34px; font-weight: 700; line-height: 1;
       background: linear-gradient(135deg, var(--gold-l), var(--gold));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .ia-stat-lbl { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+    .ia-stat-lbl { font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.4; }
 
-    /* ═══════════════════════════════════════
-       MANIFESTO
-    ═══════════════════════════════════════ */
-    .manifesto {
+    /* ═══ MANIFESTO ═══ */
+    .manifesto-sec {
       background: var(--s2); text-align: center;
       border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-      padding: 100px 32px; position: relative; overflow: hidden;
-    }
-    .manifesto::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(200,169,124,.05), transparent 70%);
-      pointer-events: none;
-    }
-    .manifesto-inner { max-width: 860px; margin: 0 auto; position: relative; }
-    .manifesto-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
-    .manifesto-headline { font-size: clamp(36px,5.5vw,72px); font-weight: 700; line-height: 1.06; letter-spacing: -2.5px; margin-bottom: 24px; }
-    .manifesto-divider { width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 32px auto; }
-    .manifesto-body { font-size: 17px; line-height: 1.8; color: var(--muted2); margin-bottom: 14px; }
-    .manifesto-bold { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--text); }
-
-    /* ═══════════════════════════════════════
-       CTA FINAL
-    ═══════════════════════════════════════ */
-    .cta-sec {
-      text-align: center; background: var(--bg); padding: 100px 32px;
+      padding: 110px 32px;
       position: relative; overflow: hidden;
     }
-    .cta-sec::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(200,169,124,.07), transparent 70%);
-      pointer-events: none;
+    /* Large seal behind manifesto text */
+    .man-seal {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 700px; height: 700px; border-radius: 50%; overflow: hidden;
+      opacity: .04; pointer-events: none;
+      animation: rot 120s linear infinite;
     }
-    .cta-sec .sec { position: relative; }
-    .cta-sec .sec-title { margin: 0 auto 16px; max-width: 620px; }
-    .cta-sec .sec-desc { margin: 0 auto 44px; text-align: center; max-width: 480px; }
-    .cta-fine { font-size: 12px; color: var(--muted); margin-top: 18px; letter-spacing: .5px; }
-    .cta-fine span { color: var(--gold); }
+    .man-seal img { width: 100%; height: 100%; object-fit: cover; filter: sepia(1) brightness(2.2); }
+    .manifesto-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .man-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+    .man-headline {
+      font-size: clamp(38px,5.8vw,76px); font-weight: 700;
+      line-height: 1.05; letter-spacing: -2.5px; margin-bottom: 20px;
+    }
+    .man-div { width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 36px auto; }
+    .man-body { font-size: 17px; line-height: 1.82; color: var(--mut2); margin-bottom: 14px; }
+    .man-bold { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: var(--text); }
 
-    /* ═══════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════ */
-    footer { padding: 40px 32px 28px; border-top: 1px solid var(--border); background: var(--s1); }
-    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-    .footer-logo img { height: 28px; object-fit: contain; display: block; }
-    .footer-copy { font-size: 12px; color: var(--muted); }
-    .footer-links { display: flex; gap: 28px; }
-    .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color .2s; }
-    .footer-links a:hover { color: var(--gold); }
+    /* ═══ CTA FINAL ═══ */
+    .cta-sec {
+      text-align: center; padding: 110px 32px;
+      position: relative; overflow: hidden;
+    }
+    .cta-sec-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(200,169,124,.07), transparent 70%);
+    }
+    /* Rotating seal in CTA section */
+    .cta-seal {
+      position: absolute; bottom: -120px; right: -120px;
+      width: 400px; height: 400px; border-radius: 50%; overflow: hidden;
+      opacity: .04; pointer-events: none;
+      animation: rot 90s linear infinite reverse;
+    }
+    .cta-seal img { width: 100%; height: 100%; object-fit: cover; filter: sepia(1) brightness(2); }
+    .cta-sec .sec { position: relative; z-index: 1; }
+    .cta-title {
+      font-size: clamp(36px,5vw,68px); font-weight: 700;
+      letter-spacing: -2px; line-height: 1.04;
+      margin: 0 auto 18px; max-width: 680px;
+    }
+    .cta-desc { font-size: 16px; line-height: 1.75; color: var(--mut2); max-width: 460px; margin: 0 auto 48px; }
+    .cta-fine { font-size: 12px; color: var(--muted); margin-top: 20px; letter-spacing: .5px; }
+    .cta-fine em { font-style: normal; color: var(--gold); }
 
-    /* ═══════════════════════════════════════
-       FAB WHATSAPP
-    ═══════════════════════════════════════ */
+    /* ═══ FOOTER ═══ */
+    footer {
+      padding: 40px 32px 28px;
+      border-top: 1px solid var(--border); background: var(--s1);
+    }
+    .foot-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .foot-logo img { height: 26px; display: block; }
+    .foot-copy { font-size: 12px; color: var(--muted); }
+    .foot-links { display: flex; gap: 28px; }
+    .foot-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .foot-links a:hover { color: var(--gold); }
+
+    /* ═══ FAB ═══ */
     .fab {
       position: fixed; bottom: 28px; right: 28px; z-index: 999;
       display: flex; align-items: center; gap: 10px;
       background: var(--wa); color: #fff;
-      padding: 14px 22px 14px 18px; border-radius: 100px;
+      padding: 14px 22px 14px 17px; border-radius: 100px;
       text-decoration: none; font-size: 14px; font-weight: 700;
-      box-shadow: 0 8px 32px rgba(37,211,102,.4);
-      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 8px 32px rgba(37,211,102,.38);
+      transition: transform .25s, box-shadow .25s;
     }
-    .fab:hover { transform: translateY(-3px); box-shadow: 0 14px 48px rgba(37,211,102,.55); }
+    .fab:hover { transform: translateY(-3px); box-shadow: 0 14px 48px rgba(37,211,102,.54); }
     .fab svg { width: 20px; height: 20px; flex-shrink: 0; }
 
-    /* ═══════════════════════════════════════
-       REVEAL
-    ═══════════════════════════════════════ */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
-    .reveal.vis { opacity: 1; transform: translateY(0); }
-    .delay-1 { transition-delay: .1s; }
-    .delay-2 { transition-delay: .2s; }
-    .delay-3 { transition-delay: .3s; }
-    .delay-4 { transition-delay: .4s; }
+    /* ═══ REVEAL ═══ */
+    .rev {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);
+    }
+    .rev.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; }
+    .d4 { transition-delay: .4s; }
 
-    /* ═══════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════ */
+    /* ═══ RESPONSIVE ═══ */
     @media (max-width: 1024px) {
       .services-grid { grid-template-columns: repeat(2,1fr); }
-      nav { padding: 0 24px; }
+      nav { padding: 0 20px; }
     }
     @media (max-width: 860px) {
       .ia-inner { grid-template-columns: 1fr; gap: 48px; }
-      .trust-inner { grid-template-columns: 1fr 1fr; }
-      .trust-item:nth-child(2) { border-right: none; }
-      .trust-item:nth-child(3) { border-top: 1px solid var(--border); }
-      .trust-item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
     }
     @media (max-width: 640px) {
-      nav { height: 62px; padding: 0 16px; }
+      nav { height: 60px; }
       .nav-links { display: none; }
       .nav-btn span { display: none; }
-      .nav-btn { padding: 10px 14px; }
       section { padding: 72px 20px; }
       .services-grid { grid-template-columns: 1fr; }
-      .trust-inner { grid-template-columns: 1fr; }
-      .trust-item { border-right: none; border-bottom: 1px solid var(--border); }
-      .trust-item:last-child { border-bottom: none; }
-      .hero-actions { flex-direction: column; align-items: center; }
-      .btn-gold, .btn-ghost { width: 100%; justify-content: center; max-width: 320px; }
-      /* Mobile: scard-back static below front */
-      .scard-back {
-        position: static; background: transparent; transform: none !important;
-        border-top: 1px solid var(--border); padding: 16px 28px 24px;
-        display: none;
-      }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .btn-gold, .btn-ghost { width: 100%; justify-content: center; max-width: 310px; }
+      .hero-brand img { height: 50px; }
+      .scard-back { position: static; transform: none !important; background: transparent; border-top: 1px solid var(--border); padding: 16px 26px 22px; display: none; }
       .scard.open .scard-back { display: flex; }
-      .ia-stat-grid { grid-template-columns: 1fr 1fr; }
-      .services-head { flex-direction: column; align-items: flex-start; }
-      .fab { right: 16px; bottom: 20px; font-size: 13px; padding: 12px 18px 12px 14px; }
+      .seal-1 { width: 360px; height: 360px; }
+      .seal-2 { width: 480px; height: 480px; }
+      .fab { right: 14px; bottom: 18px; font-size: 13px; padding: 12px 16px 12px 13px; }
+      #cursor-glow { display: none; }
     }
   </style>
 </head>
 <body>
 
+  <div id="prog"></div>
+  <div id="cursor-glow"></div>
+
   <!-- NAV -->
   <nav>
-    <a href="#" class="nav-logo">
-      <img src="images/logo.jpeg" alt="Ímpar Marketing">
-    </a>
+    <a href="#" class="nav-logo"><img src="images/logo.jpeg" alt="Ímpar Marketing"></a>
     <ul class="nav-links">
       <li><a href="#servicos">Serviços</a></li>
       <li><a href="#ia">IA</a></li>
@@ -448,79 +511,76 @@
       <li><a href="#cta">Contato</a></li>
     </ul>
     <a href="https://wa.me/NUMERO_WPP" class="nav-btn" onclick="trackCTA('nav')">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       <span>Falar agora</span>
     </a>
   </nav>
 
   <!-- HERO -->
   <section class="hero" id="hero">
+    <canvas id="particles"></canvas>
+    <!-- Rotating seals (identity visual) -->
+    <div class="seal-wrap seal-1"><img src="images/sublogo.PNG" alt=""></div>
+    <div class="seal-wrap seal-2"><img src="images/sublogo.PNG" alt=""></div>
+    <div class="hero-grid"></div>
+    <div class="hero-vignette"></div>
     <div class="hero-inner">
-      <div class="hero-tag reveal">
-        <div class="hero-tag-dot"></div>
-        Agência de Marketing Digital
+      <!-- Logo prominente -->
+      <div class="hero-brand rev">
+        <img src="images/logo.jpeg" alt="Ímpar Marketing">
       </div>
-      <h1 class="reveal delay-1">
-        Marketing que<br>
-        <span class="typerow">gera <span id="typeword">impacto.</span></span>
+      <div class="gold-line rev d1"></div>
+      <h1 class="rev d1">
+        Sua marca precisa<br>
+        <span class="typerow">ser <span id="tw">ímpar.</span></span>
       </h1>
-      <p class="hero-sub reveal delay-2">
-        Estratégia, criatividade e inteligência artificial em um só lugar.
-        Fazemos marcas crescerem, venderem mais e ficarem na mente do cliente.
+      <p class="hero-sub rev d2">
+        Estratégia, criatividade e inteligência artificial trabalhando juntos
+        para fazer seu negócio crescer, vender mais e se tornar referência.
       </p>
-      <div class="hero-actions reveal delay-3">
-        <a href="https://wa.me/NUMERO_WPP" class="btn-gold" onclick="trackCTA('hero')">
+      <div class="hero-btns rev d3">
+        <a href="https://wa.me/NUMERO_WPP" class="btn-gold mag" onclick="trackCTA('hero')">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Quero crescer agora
         </a>
-        <a href="#servicos" class="btn-ghost">Ver o que fazemos →</a>
+        <a href="#servicos" class="btn-ghost mag">Ver o que fazemos →</a>
       </div>
     </div>
-    <div class="hero-scroll">
-      <div class="hero-scroll-line"></div>
+    <div class="scroll-ind">
+      <div class="scroll-ind-line"></div>
       scroll
     </div>
   </section>
-
-  <!-- TRUST STRIP -->
-  <div class="trust-strip">
-    <div class="trust-inner">
-      <div class="trust-item"><div><div class="trust-num">+150</div><div class="trust-label">Clientes atendidos</div></div></div>
-      <div class="trust-item"><div><div class="trust-num">R$3M+</div><div class="trust-label">Em vendas geradas</div></div></div>
-      <div class="trust-item"><div><div class="trust-num">8</div><div class="trust-label">Serviços completos</div></div></div>
-      <div class="trust-item"><div><div class="trust-num">30d</div><div class="trust-label">Para ver resultado</div></div></div>
-    </div>
-  </div>
 
   <!-- SERVIÇOS -->
   <section id="servicos">
     <div class="sec">
       <div class="services-head">
         <div>
-          <div class="sec-tag reveal">Serviços</div>
-          <h2 class="sec-title reveal delay-1">Tudo que sua marca<br>precisa para vender</h2>
+          <div class="sec-eyebrow rev">Serviços</div>
+          <h2 class="sec-title rev d1">Tudo que sua marca<br>precisa para <span class="shimmer">vender</span></h2>
         </div>
-        <p class="sec-desc reveal delay-2" style="max-width:320px;flex-shrink:0">
-          Passe o mouse sobre cada card para descobrir como podemos transformar seu negócio.
+        <p class="sec-desc rev d2" style="max-width:300px;flex-shrink:0">
+          Passe o mouse sobre cada card para ver como transformamos seu negócio.
         </p>
       </div>
       <div class="services-grid">
 
-        <div class="scard reveal">
+        <div class="scard rev">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
-            <div class="scard-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+            <div class="scard-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
             <div class="scard-name">Tráfego Pago</div>
             <div class="scard-hint">Saiba mais →</div>
           </div>
           <div class="scard-back">
             <div class="scard-back-name">Tráfego Pago</div>
             <div class="scard-back-desc">Meta Ads e Google Ads com estratégia focada em conversão real. Cada real investido trabalhando pelo máximo retorno.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-trafego')">Falar sobre este serviço →</a>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('trafego')">Quero saber mais →</a>
           </div>
         </div>
 
-        <div class="scard reveal delay-1">
+        <div class="scard rev d1">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
             <div class="scard-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
@@ -529,12 +589,12 @@
           </div>
           <div class="scard-back">
             <div class="scard-back-name">Social Media</div>
-            <div class="scard-back-desc">Gestão completa das redes sociais com estratégia, calendário editorial, criação e engajamento real com a sua audiência.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-social')">Falar sobre este serviço →</a>
+            <div class="scard-back-desc">Gestão completa com estratégia, calendário editorial, criação de conteúdo e engajamento real com a sua audiência.</div>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('social')">Quero saber mais →</a>
           </div>
         </div>
 
-        <div class="scard reveal delay-2">
+        <div class="scard rev d2">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
             <div class="scard-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
@@ -543,12 +603,12 @@
           </div>
           <div class="scard-back">
             <div class="scard-back-name">Criação de Conteúdo</div>
-            <div class="scard-back-desc">Textos, artes, vídeos e reels que comunicam a essência da sua marca e transformam seguidores em clientes pagantes.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-conteudo')">Falar sobre este serviço →</a>
+            <div class="scard-back-desc">Textos, artes, vídeos e reels que comunicam a essência da marca e transformam seguidores em clientes.</div>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('conteudo')">Quero saber mais →</a>
           </div>
         </div>
 
-        <div class="scard reveal delay-3">
+        <div class="scard rev d3">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
             <div class="scard-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
@@ -557,12 +617,12 @@
           </div>
           <div class="scard-back">
             <div class="scard-back-name">Branding & Identidade</div>
-            <div class="scard-back-desc">Logo, paleta, tipografia e manual de identidade visual. Marcas que se destacam e ficam na memória do seu cliente.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-branding')">Falar sobre este serviço →</a>
+            <div class="scard-back-desc">Logo, paleta, tipografia e manual de identidade. Marcas que se destacam e ficam na memória do seu cliente.</div>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('branding')">Quero saber mais →</a>
           </div>
         </div>
 
-        <div class="scard reveal">
+        <div class="scard rev">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
             <div class="scard-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
@@ -571,12 +631,12 @@
           </div>
           <div class="scard-back">
             <div class="scard-back-name">Sites & Landing Pages</div>
-            <div class="scard-back-desc">Design premium, carregamento rápido e otimizados para converter visitantes em leads e clientes reais.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-sites')">Falar sobre este serviço →</a>
+            <div class="scard-back-desc">Design premium, carregamento rápido e otimizados para converter visitantes em leads e clientes pagantes.</div>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('sites')">Quero saber mais →</a>
           </div>
         </div>
 
-        <div class="scard reveal delay-1">
+        <div class="scard rev d1">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
             <div class="scard-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
@@ -585,12 +645,12 @@
           </div>
           <div class="scard-back">
             <div class="scard-back-name">Email & Automação</div>
-            <div class="scard-back-desc">Sequências de e-mail, nutrição de leads e automações de vendas que trabalham 24h por dia no piloto automático.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-email')">Falar sobre este serviço →</a>
+            <div class="scard-back-desc">Sequências de e-mail, nutrição de leads e automações de vendas no piloto automático 24h por dia.</div>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('email')">Quero saber mais →</a>
           </div>
         </div>
 
-        <div class="scard reveal delay-2">
+        <div class="scard rev d2">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
             <div class="scard-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
@@ -599,12 +659,12 @@
           </div>
           <div class="scard-back">
             <div class="scard-back-name">SEO & Posicionamento</div>
-            <div class="scard-back-desc">Estratégia de SEO para ranquear sua empresa no Google e atrair clientes orgânicos de forma consistente e crescente.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-seo')">Falar sobre este serviço →</a>
+            <div class="scard-back-desc">Estratégia de SEO para ranquear sua empresa no Google e atrair clientes orgânicos de forma crescente.</div>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('seo')">Quero saber mais →</a>
           </div>
         </div>
 
-        <div class="scard reveal delay-3">
+        <div class="scard rev d3">
           <div class="scard-line"></div><div class="scard-glare"></div>
           <div class="scard-front">
             <div class="scard-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
@@ -613,8 +673,8 @@
           </div>
           <div class="scard-back">
             <div class="scard-back-name">Estratégia de Vendas</div>
-            <div class="scard-back-desc">Funis de vendas digitais, CRM e automações que aumentam a conversão e reduzem o ciclo de venda da sua empresa.</div>
-            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('scard-vendas')">Falar sobre este serviço →</a>
+            <div class="scard-back-desc">Funis de vendas, CRM e automações que aumentam a conversão e reduzem o ciclo de venda da sua empresa.</div>
+            <a href="https://wa.me/NUMERO_WPP" class="scard-cta" onclick="trackCTA('vendas')">Quero saber mais →</a>
           </div>
         </div>
 
@@ -623,25 +683,26 @@
   </section>
 
   <!-- IA -->
-  <section class="ia-section" id="ia">
+  <section class="ia-sec" id="ia">
     <div class="ia-inner">
       <div>
-        <div class="ia-badge reveal">✦ Diferencial Exclusivo</div>
-        <div class="sec-tag reveal">Inteligência Artificial</div>
-        <h2 class="sec-title reveal delay-1">IA que trabalha<br>pelo seu negócio</h2>
-        <p class="sec-desc reveal delay-2">
-          Integramos IA de forma estratégica em todos os processos — acelerando resultados
-          com uma precisão que o marketing tradicional não consegue entregar.
+        <div class="ia-badge rev">✦ Diferencial Exclusivo</div>
+        <div class="sec-eyebrow rev">Inteligência Artificial</div>
+        <h2 class="sec-title rev d1">IA que trabalha<br>pelo seu <span class="shimmer">negócio</span></h2>
+        <p class="sec-desc rev d2">
+          Integramos IA em todos os processos — acelerando resultados
+          com precisão que o marketing tradicional não consegue entregar.
         </p>
         <ul class="ia-list">
-          <li class="reveal delay-1"><div class="ia-bullet"></div>Chatbots com IA que capturam e qualificam leads 24 horas por dia</li>
-          <li class="reveal delay-2"><div class="ia-bullet"></div>Criação de conteúdo em escala com a voz e identidade da sua marca</li>
-          <li class="reveal delay-3"><div class="ia-bullet"></div>Análise de dados e insights automáticos para decisões mais rápidas</li>
-          <li class="reveal delay-3"><div class="ia-bullet"></div>Funis inteligentes com segmentação dinâmica por comportamento</li>
+          <li class="rev d1"><div class="ia-dot"></div>Chatbots com IA que capturam e qualificam leads 24 horas por dia</li>
+          <li class="rev d2"><div class="ia-dot"></div>Criação de conteúdo em escala com a voz e identidade da sua marca</li>
+          <li class="rev d3"><div class="ia-dot"></div>Análise de dados e insights automáticos para decisões mais rápidas</li>
+          <li class="rev d4"><div class="ia-dot"></div>Funis inteligentes com segmentação dinâmica por comportamento</li>
         </ul>
       </div>
-      <div class="ia-visual reveal delay-2">
-        <div class="ia-vis-tag">Resultados com IA integrada</div>
+      <div class="ia-card rev d2">
+        <div class="ia-seal"><img src="images/sublogo.PNG" alt=""></div>
+        <div class="ia-vis-lbl">Resultados com IA integrada</div>
         <div class="ia-stat-grid">
           <div class="ia-stat"><div class="ia-stat-val">3×</div><div class="ia-stat-lbl">mais leads qualificados</div></div>
           <div class="ia-stat"><div class="ia-stat-val">68%</div><div class="ia-stat-lbl">redução no custo por lead</div></div>
@@ -653,49 +714,51 @@
   </section>
 
   <!-- MANIFESTO -->
-  <section class="manifesto" id="manifesto">
+  <section class="manifesto-sec" id="manifesto">
+    <div class="man-seal"><img src="images/sublogo.PNG" alt=""></div>
     <div class="manifesto-inner">
-      <div class="manifesto-eyebrow reveal">Nossa Filosofia</div>
-      <h2 class="manifesto-headline reveal delay-1">
-        <span class="gold-grad">ÍMPAR</span> POR NATUREZA.<br>
-        <span class="gold-grad">IMPACTO</span> POR ESCOLHA.
+      <div class="man-eyebrow rev">Nossa Filosofia</div>
+      <h2 class="man-headline rev d1">
+        <span class="shimmer">ÍMPAR</span> POR NATUREZA.<br>
+        <span class="shimmer">IMPACTO</span> POR ESCOLHA.
       </h2>
-      <div class="manifesto-divider"></div>
-      <p class="manifesto-body reveal delay-2">
+      <div class="man-div"></div>
+      <p class="man-body rev d2">
         Na Ímpar, ideias não seguem o óbvio. Criamos estratégias que conectam,
         marcas que se destacam e resultados que deixam marca.
         Porque no mercado digital, quem não é lembrado não é escolhido.
       </p>
-      <p class="manifesto-bold reveal delay-3">Ser ímpar não é acidente. É estratégia.</p>
+      <p class="man-bold rev d3">Ser ímpar não é acidente. É estratégia.</p>
     </div>
   </section>
 
   <!-- CTA FINAL -->
   <section class="cta-sec" id="cta">
+    <div class="cta-sec-bg"></div>
+    <div class="cta-seal"><img src="images/sublogo.PNG" alt=""></div>
     <div class="sec">
-      <div class="sec-tag reveal" style="justify-content:center;display:flex">Vamos começar?</div>
-      <h2 class="sec-title reveal delay-1" style="text-align:center">
+      <h2 class="cta-title rev">
         Pronto para ser<br>
-        <span class="gold-grad">ímpar</span> no mercado?
+        <span class="shimmer">ímpar</span> no mercado?
       </h2>
-      <p class="sec-desc reveal delay-2">
+      <p class="cta-desc rev d1">
         Chame agora e receba uma análise gratuita da sua presença digital
-        com o plano exato para sua marca crescer.
+        com o plano exato para sua marca crescer de verdade.
       </p>
-      <a href="https://wa.me/NUMERO_WPP" class="btn-gold reveal delay-3" onclick="trackCTA('cta-final')" style="margin:0 auto;display:inline-flex">
+      <a href="https://wa.me/NUMERO_WPP" class="btn-gold mag rev d2" onclick="trackCTA('cta')" style="margin:0 auto;display:inline-flex">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Análise gratuita agora
       </a>
-      <div class="cta-fine reveal delay-4"><span>✦</span> Sem compromisso · Resposta em minutos</div>
+      <div class="cta-fine rev d3"><em>✦</em> Sem compromisso · Resposta em minutos</div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-inner">
-      <a href="#" class="footer-logo"><img src="images/logo.jpeg" alt="Ímpar Marketing"></a>
-      <div class="footer-copy">© 2025 Ímpar Marketing · Marketing que Gera Impacto</div>
-      <div class="footer-links">
+    <div class="foot-inner">
+      <a href="#"><div class="foot-logo"><img src="images/logo.jpeg" alt="Ímpar Marketing"></div></a>
+      <div class="foot-copy">© 2025 Ímpar Marketing · Marketing que Gera Impacto</div>
+      <div class="foot-links">
         <a href="#servicos">Serviços</a>
         <a href="#ia">IA</a>
         <a href="https://wa.me/NUMERO_WPP">Contato</a>
@@ -704,42 +767,98 @@
   </footer>
 
   <!-- FAB -->
-  <a href="https://wa.me/NUMERO_WPP" class="fab" aria-label="WhatsApp" onclick="trackCTA('fab')">
+  <a href="https://wa.me/NUMERO_WPP" class="fab" onclick="trackCTA('fab')">
     <svg viewBox="0 0 32 32" fill="white"><path d="M16 3C8.82 3 3 8.82 3 16c0 2.35.65 4.56 1.78 6.45L3 29l6.77-1.76A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm5.92 16.59c-.25.7-1.47 1.36-2.02 1.44-.5.08-1.16.11-1.87-.12-.43-.14-.99-.32-1.69-.63-2.97-1.28-4.9-4.27-5.05-4.47-.15-.2-1.2-1.6-1.2-3.04s.76-2.16 1.03-2.45c.27-.3.58-.37.78-.37l.56.01c.18 0 .43-.07.67.51.25.59.85 2.09.93 2.24.08.15.13.32.03.5-.1.19-.15.3-.3.47-.16.16-.33.36-.47.48-.16.13-.32.27-.14.54.19.27.81 1.2 1.74 1.94 1.19 1 2.21 1.31 2.53 1.45.32.14.5.12.69-.07.19-.19.78-.91 1-1.24.21-.32.43-.26.72-.16.29.1 1.86.88 2.18 1.04.32.16.54.24.62.37.08.14.08.77-.17 1.46z"/></svg>
     WhatsApp
   </a>
 
   <script>
-  /* ── Typewriter ── */
+  /* ─── Progress bar ─── */
   (function(){
-    var words=['impacto.','vendas.','resultado.','crescimento.'];
+    var p=document.getElementById('prog');
+    window.addEventListener('scroll',function(){
+      var pct=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+      p.style.width=pct+'%';
+    },{passive:true});
+  })();
+
+  /* ─── Cursor glow ─── */
+  (function(){
+    var g=document.getElementById('cursor-glow');
+    if(!g) return;
+    document.addEventListener('mousemove',function(e){
+      g.style.left=e.clientX+'px';
+      g.style.top=e.clientY+'px';
+    },{passive:true});
+  })();
+
+  /* ─── Particles ─── */
+  (function(){
+    var c=document.getElementById('particles');
+    if(!c) return;
+    var ctx=c.getContext('2d');
+    function resize(){ c.width=window.innerWidth; c.height=window.innerHeight; }
+    resize();
+    window.addEventListener('resize',resize,{passive:true});
+    var pts=[];
+    for(var i=0;i<55;i++) pts.push({
+      x:Math.random()*c.width, y:Math.random()*c.height,
+      r:Math.random()*1.6+.4,
+      vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
+      o:Math.random()*.35+.08
+    });
+    function frame(){
+      ctx.clearRect(0,0,c.width,c.height);
+      pts.forEach(function(p){
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0) p.x=c.width;
+        if(p.x>c.width) p.x=0;
+        if(p.y<0) p.y=c.height;
+        if(p.y>c.height) p.y=0;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(200,169,124,'+p.o+')';
+        ctx.fill();
+      });
+      requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+  /* ─── Typewriter ─── */
+  (function(){
+    var words=['ímpar.','lembrada.','escolhida.','referência.'];
     var wi=0,ci=0,del=false;
-    var el=document.getElementById('typeword');
+    var el=document.getElementById('tw');
     if(!el) return;
     function tick(){
       var w=words[wi];
       if(!del){
         el.textContent=w.slice(0,++ci);
-        if(ci===w.length){del=true;return setTimeout(tick,1900);}
-        setTimeout(tick,90);
+        if(ci===w.length){del=true;return setTimeout(tick,2000);}
+        setTimeout(tick,95);
       } else {
         el.textContent=w.slice(0,--ci);
         if(ci===0){del=false;wi=(wi+1)%words.length;}
-        setTimeout(tick,48);
+        setTimeout(tick,52);
       }
     }
-    setTimeout(tick,900);
+    setTimeout(tick,1000);
   })();
 
-  /* ── Scroll reveal ── */
+  /* ─── Scroll reveal ─── */
   (function(){
     var obs=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});
-    },{threshold:0.12});
-    document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+      entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('on'); });
+    },{threshold:.1});
+    document.querySelectorAll('.rev').forEach(function(el){ obs.observe(el); });
+    // Hero reveals immediately
+    document.querySelectorAll('.hero .rev').forEach(function(el){
+      setTimeout(function(){ el.classList.add('on'); }, 100);
+    });
   })();
 
-  /* ── 3D Card tilt (desktop) ── */
+  /* ─── 3D Card tilt + glare ─── */
   (function(){
     if(window.innerWidth<=640) return;
     document.querySelectorAll('.scard').forEach(function(card){
@@ -749,33 +868,51 @@
         var y=(e.clientY-r.top)/r.height-.5;
         card.style.setProperty('--gx',(e.clientX-r.left)+'px');
         card.style.setProperty('--gy',(e.clientY-r.top)+'px');
-        card.style.transform='perspective(700px) rotateX('+(y*-8)+'deg) rotateY('+(x*8)+'deg)';
-        card.style.transition='transform .08s linear,border-color .3s,box-shadow .3s';
+        card.style.transform='perspective(700px) rotateX('+(y*-7)+'deg) rotateY('+(x*7)+'deg)';
+        card.style.transition='transform .08s linear,border-color .35s,box-shadow .35s';
       });
       card.addEventListener('mouseleave',function(){
-        card.style.transform='perspective(700px) rotateX(0deg) rotateY(0deg)';
-        card.style.transition='transform .5s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s';
+        card.style.transform='perspective(700px) rotateX(0) rotateY(0)';
+        card.style.transition='transform .55s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s';
       });
     });
   })();
 
-  /* ── Mobile tap expand ── */
+  /* ─── Mobile tap expand ─── */
   (function(){
     if(window.innerWidth>640) return;
     document.querySelectorAll('.scard').forEach(function(card){
       card.addEventListener('click',function(e){
         if(e.target.closest('a')) return;
         var was=card.classList.contains('open');
-        document.querySelectorAll('.scard.open').forEach(function(c){c.classList.remove('open');});
+        document.querySelectorAll('.scard.open').forEach(function(c){ c.classList.remove('open'); });
         if(!was) card.classList.add('open');
       });
     });
   })();
 
-  /* ── CTA tracking ── */
-  function trackCTA(label){
-    if(typeof fbq!=='undefined') fbq('track','Contact',{content_name:label});
-  }
+  /* ─── Magnetic buttons ─── */
+  (function(){
+    if(window.innerWidth<=640) return;
+    document.querySelectorAll('.mag').forEach(function(btn){
+      btn.addEventListener('mouseenter',function(){
+        btn.style.transition='transform .1s linear';
+      });
+      btn.addEventListener('mousemove',function(e){
+        var r=btn.getBoundingClientRect();
+        var x=(e.clientX-r.left-r.width/2)*.28;
+        var y=(e.clientY-r.top-r.height/2)*.28;
+        btn.style.transform='translate('+x+'px,'+y+'px)';
+      });
+      btn.addEventListener('mouseleave',function(){
+        btn.style.transition='transform .5s cubic-bezier(.16,1,.3,1)';
+        btn.style.transform='translate(0,0)';
+      });
+    });
+  })();
+
+  /* ─── CTA tracking ─── */
+  function trackCTA(l){ if(typeof fbq!=='undefined') fbq('track','Contact',{content_name:l}); }
   </script>
 </body>
 </html>
