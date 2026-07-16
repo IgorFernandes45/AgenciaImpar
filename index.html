@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ímpar — Marketing que Gera Impacto</title>
+  <meta name="description" content="Agência de marketing digital focada em resultados reais. Tráfego pago, social media, branding e soluções de IA para fazer sua marca crescer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #08080c;
+      --surface:  #101016;
+      --surface2: #18181f;
+      --accent:   #d946ef;
+      --accent2:  #7c3aed;
+      --grad:     linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
+      --text:     #f5f5f7;
+      --muted:    #8888a0;
+      --border:   rgba(255,255,255,.07);
+      --radius:   16px;
+      --wa:       #25d366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    }
+    h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; }
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ═══════════════════════════════
+       NAV
+    ═══════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(8,8,12,.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo em { font-style: normal; }
+    .nav-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      text-decoration: none; letter-spacing: .3px;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--grad); color: #fff;
+      padding: 10px 22px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; letter-spacing: .3px;
+      text-decoration: none; transition: opacity .2s, transform .2s;
+    }
+    .nav-cta:hover { opacity: .88; transform: translateY(-1px); }
+    .nav-cta svg { width: 14px; height: 14px; }
+
+    /* ═══════════════════════════════
+       HERO
+    ═══════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      padding: 130px 40px 90px;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(124,58,237,.16) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 15% 80%, rgba(217,70,239,.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-geo {
+      position: absolute; top: 120px; right: 60px;
+      width: 1px; height: 300px; background: var(--border);
+      pointer-events: none;
+    }
+    .hero-geo::before {
+      content: ''; position: absolute; top: 0; left: -60px;
+      width: 120px; height: 1px; background: var(--border);
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 400px;
+      gap: 80px; align-items: center; position: relative;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 3.5px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow-line {
+      width: 32px; height: 1px;
+      background: var(--grad);
+    }
+    .hero h1 {
+      font-size: clamp(44px, 5.5vw, 82px);
+      font-weight: 700; line-height: 1.03;
+      letter-spacing: -2px; margin-bottom: 28px;
+    }
+    .hero-desc {
+      font-size: 17px; line-height: 1.75;
+      color: var(--muted); margin-bottom: 44px;
+      max-width: 500px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--grad); color: #fff;
+      padding: 15px 32px; border-radius: 100px;
+      font-size: 15px; font-weight: 600; letter-spacing: .2px;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(217,70,239,.28);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 44px rgba(217,70,239,.38); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 9px;
+      border: 1.5px solid rgba(255,255,255,.12); color: var(--text);
+      padding: 14px 30px; border-radius: 100px;
+      font-size: 15px; font-weight: 500;
+      text-decoration: none; transition: border-color .2s;
+    }
+    .btn-secondary:hover { border-color: rgba(217,70,239,.4); }
+
+    /* Owner photo */
+    .hero-photo { position: relative; }
+    .hero-photo-glow {
+      position: absolute; inset: -30px;
+      background: radial-gradient(circle, rgba(217,70,239,.12), transparent 70%);
+      border-radius: 50%; pointer-events: none;
+    }
+    .hero-photo-frame {
+      width: 100%; aspect-ratio: 3/4;
+      border-radius: 28px; overflow: hidden;
+      background: var(--surface2);
+      border: 1px solid rgba(255,255,255,.09);
+      position: relative;
+    }
+    .hero-photo-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top; display: block;
+    }
+    .photo-placeholder {
+      width: 100%; height: 100%; min-height: 460px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px;
+      background: linear-gradient(160deg, #14141c 0%, #0c0c14 100%);
+    }
+    .photo-placeholder svg { width: 52px; height: 52px; opacity: .2; }
+    .photo-placeholder span { font-size: 12px; color: var(--muted); letter-spacing: .5px; }
+    .hero-photo-badge {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(8,8,14,.88); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 13px 22px; border-radius: 100px;
+      white-space: nowrap; text-align: center;
+    }
+    .badge-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text);
+    }
+    .badge-role { font-size: 11px; color: var(--muted); letter-spacing: .3px; margin-top: 2px; }
+
+    /* ═══════════════════════════════
+       DIFERENCIAIS STRIP
+    ═══════════════════════════════ */
+    .strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .strip-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .strip-item {
+      padding: 28px 28px;
+      border-right: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .strip-item:last-child { border-right: none; }
+    .strip-icon {
+      width: 42px; height: 42px; border-radius: 11px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .strip-label { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.25; }
+    .strip-sub { font-size: 11px; color: var(--muted); margin-top: 3px; letter-spacing: .2px; }
+
+    /* ═══════════════════════════════
+       SEÇÕES COMUNS
+    ═══════════════════════════════ */
+    section { padding: 96px 40px; }
+    .sec-inner { max-width: 1200px; margin: 0 auto; }
+    .sec-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .sec-eyebrow::before {
+      content: ''; width: 28px; height: 1px; background: var(--accent);
+    }
+    .sec-eyebrow-center { justify-content: center; }
+    .sec-eyebrow-center::before { display: none; }
+    .sec-title {
+      font-size: clamp(32px, 3.8vw, 54px);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -1px; margin-bottom: 18px;
+    }
+    .sec-desc {
+      font-size: 16px; line-height: 1.75;
+      color: var(--muted); max-width: 540px;
+    }
+
+    /* ═══════════════════════════════
+       MANIFESTO
+    ═══════════════════════════════ */
+    .manifesto {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .manifesto-quote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(30px, 4.5vw, 58px);
+      font-weight: 700; line-height: 1.12;
+      letter-spacing: -1.5px; margin-bottom: 36px;
+    }
+    .manifesto-divider {
+      width: 48px; height: 2px;
+      background: var(--grad); margin: 0 auto 36px;
+    }
+    .manifesto-text {
+      font-size: 17px; line-height: 1.8;
+      color: var(--muted); max-width: 660px; margin: 0 auto 20px;
+    }
+    .manifesto-bold {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px; font-weight: 600; color: var(--text);
+    }
+
+    /* ═══════════════════════════════
+       SERVIÇOS
+    ═══════════════════════════════ */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      margin-top: 56px;
+    }
+    .scard {
+      background: var(--surface);
+      padding: 36px 28px;
+      transition: background .25s;
+      cursor: default;
+    }
+    .scard:hover { background: var(--surface2); }
+    .scard-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 20px;
+    }
+    .scard h3 {
+      font-size: 16px; font-weight: 600; margin-bottom: 10px;
+    }
+    .scard p { font-size: 13.5px; line-height: 1.65; color: var(--muted); }
+
+    /* ═══════════════════════════════
+       IA SECTION
+    ═══════════════════════════════ */
+    .ia-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .ia-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .ia-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(217,70,239,.1); border: 1px solid rgba(217,70,239,.2);
+      color: var(--accent); padding: 6px 14px; border-radius: 100px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .ia-list { list-style: none; margin-top: 32px; }
+    .ia-list li {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 15px 0; border-bottom: 1px solid var(--border);
+      font-size: 15px; line-height: 1.6; color: var(--muted);
+    }
+    .ia-list li:last-child { border-bottom: none; }
+    .ia-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--grad); flex-shrink: 0; margin-top: 8px;
+    }
+    .ia-visual {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 24px; padding: 40px 36px;
+      position: relative; overflow: hidden;
+    }
+    .ia-visual::before {
+      content: ''; position: absolute;
+      top: -60px; right: -60px;
+      width: 220px; height: 220px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(217,70,239,.18), transparent 70%);
+      pointer-events: none;
+    }
+    .ia-visual-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 28px;
+    }
+    .ia-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .ia-stat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px 20px;
+    }
+    .ia-stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 34px; font-weight: 700; line-height: 1;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .ia-stat-label { font-size: 12px; color: var(--muted); margin-top: 7px; line-height: 1.4; }
+
+    /* ═══════════════════════════════
+       RESULTADOS
+    ═══════════════════════════════ */
+    .resultados { text-align: center; }
+    .num-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      margin-top: 56px;
+    }
+    .num-card { background: var(--surface); padding: 44px 24px; }
+    .num-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 52px; font-weight: 700; line-height: 1;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 10px;
+    }
+    .num-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+    /* ═══════════════════════════════
+       DONA
+    ═══════════════════════════════ */
+    .dona-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .dona-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 440px 1fr;
+      gap: 80px; align-items: center;
+    }
+    .dona-photo-wrap { position: relative; }
+    .dona-photo-glow {
+      position: absolute; bottom: -24px; right: -24px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: var(--grad); opacity: .1; filter: blur(32px);
+      pointer-events: none;
+    }
+    .dona-frame {
+      width: 100%; aspect-ratio: 3/4;
+      border-radius: 28px; overflow: hidden;
+      background: var(--surface2);
+      border: 1px solid rgba(255,255,255,.09);
+    }
+    .dona-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top; display: block;
+    }
+    .dona-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(217,70,239,.08); border: 1px solid rgba(217,70,239,.18);
+      color: var(--accent); padding: 6px 16px; border-radius: 100px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 24px;
+    }
+    .dona-name {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -1.5px; margin-bottom: 10px;
+    }
+    .dona-title {
+      font-size: 15px; color: var(--accent);
+      font-weight: 500; margin-bottom: 28px; letter-spacing: .2px;
+    }
+    .dona-bio {
+      font-size: 16px; line-height: 1.8;
+      color: var(--muted); margin-bottom: 36px;
+    }
+    .dona-creds { display: flex; flex-direction: column; gap: 13px; margin-bottom: 40px; }
+    .dona-cred {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; color: var(--muted); line-height: 1.5;
+    }
+    .dona-cred-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--grad); flex-shrink: 0; margin-top: 7px;
+    }
+
+    /* ═══════════════════════════════
+       DEPOIMENTOS
+    ═══════════════════════════════ */
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 56px;
+    }
+    .tcard {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px 28px;
+      transition: border-color .25s;
+    }
+    .tcard:hover { border-color: rgba(217,70,239,.25); }
+    .tcard-stars { font-size: 14px; color: var(--accent); margin-bottom: 18px; }
+    .tcard-text {
+      font-size: 14.5px; line-height: 1.75;
+      color: var(--muted); font-style: italic; margin-bottom: 24px;
+    }
+    .tcard-author { display: flex; align-items: center; gap: 12px; }
+    .tcard-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--surface2); display: flex;
+      align-items: center; justify-content: center; font-size: 17px;
+      flex-shrink: 0;
+    }
+    .tcard-name { font-size: 13px; font-weight: 600; }
+    .tcard-role { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ═══════════════════════════════
+       CTA FINAL
+    ═══════════════════════════════ */
+    .cta-section {
+      text-align: center;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(124,58,237,.1), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .sec-inner { position: relative; }
+    .cta-section .sec-title { max-width: 680px; margin: 0 auto 16px; }
+    .cta-section .sec-desc { margin: 0 auto 44px; text-align: center; max-width: 500px; }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      padding: 44px 40px 32px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--text);
+    }
+    .footer-copy { font-size: 13px; color: var(--muted); }
+    .footer-links { display: flex; gap: 28px; }
+    .footer-links a {
+      font-size: 13px; color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ═══════════════════════════════
+       FAB WHATSAPP
+    ═══════════════════════════════ */
+    .fab {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--wa); color: #fff;
+      padding: 14px 22px 14px 18px; border-radius: 100px;
+      text-decoration: none; font-size: 14px; font-weight: 700;
+      box-shadow: 0 8px 32px rgba(37,211,102,.45);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .fab:hover { transform: translateY(-3px); box-shadow: 0 12px 44px rgba(37,211,102,.55); }
+    .fab svg { width: 20px; height: 20px; }
+
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      section { padding: 72px 20px; }
+      .hero { padding: 100px 20px 64px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-photo { order: -1; max-width: 300px; margin: 0 auto; }
+      .hero-geo { display: none; }
+      .strip-inner { grid-template-columns: 1fr 1fr; }
+      .strip-item:nth-child(2) { border-right: none; }
+      .strip-item:nth-child(3) { border-top: 1px solid var(--border); }
+      .strip-item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+      .ia-inner { grid-template-columns: 1fr; gap: 48px; }
+      .num-grid { grid-template-columns: 1fr 1fr; }
+      .dona-inner { grid-template-columns: 1fr; gap: 48px; }
+      .dona-photo-wrap { max-width: 320px; margin: 0 auto; }
+      .testi-grid { grid-template-columns: 1fr; }
+      footer .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 14px 16px; }
+      .nav-cta span { display: none; }
+      .strip-inner { grid-template-columns: 1fr; }
+      .strip-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .strip-item:last-child { border-bottom: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .ia-stat-grid { grid-template-columns: 1fr 1fr; }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-secondary { justify-content: center; text-align: center; }
+      .fab { bottom: 20px; right: 16px; padding: 13px 18px 13px 14px; font-size: 13px; }
+    }
+
+    /* ═══════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp .65s cubic-bezier(.16,1,.3,1) forwards; }
+    .d1 { animation-delay: .08s; }
+    .d2 { animation-delay: .18s; }
+    .d3 { animation-delay: .28s; }
+    .d4 { animation-delay: .38s; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAV ═══ -->
+  <nav>
+    <a href="#" class="nav-logo">Í<em class="grad-text">M</em>PAR</a>
+    <ul class="nav-links">
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#ia">IA</a></li>
+      <li><a href="#resultados">Resultados</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+    </ul>
+    <a href="https://wa.me/NUMERO_WPP" class="nav-cta" onclick="trackCTA('nav')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span>Falar com especialista</span>
+    </a>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-geo"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow fade-up d1">
+          <div class="hero-eyebrow-line"></div>
+          Agência de Marketing Digital
+        </div>
+        <h1 class="fade-up d2">
+          Marketing<br>que <span class="grad-text">gera</span><br>impacto.
+        </h1>
+        <p class="hero-desc fade-up d3">
+          Estratégias que vendem. Resultados que ficam.
+          Combinamos criatividade, dados e inteligência artificial
+          para fazer sua marca se destacar de verdade.
+        </p>
+        <div class="hero-actions fade-up d4">
+          <a href="https://wa.me/NUMERO_WPP" class="btn-primary" onclick="trackCTA('hero')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Quero começar agora
+          </a>
+          <a href="#servicos" class="btn-secondary">Ver serviços →</a>
+        </div>
+      </div>
+      <div class="hero-photo fade-up d3">
+        <div class="hero-photo-glow"></div>
+        <div class="hero-photo-frame">
+          <!-- Troque pelo src da foto da Tamara: <img src="tamara.webp" alt="Tamara Maria"> -->
+          <div class="photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>Foto da Tamara</span>
+          </div>
+        </div>
+        <div class="hero-photo-badge">
+          <div class="badge-name">Tamara Maria</div>
+          <div class="badge-role">CEO & Estrategista de Marketing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STRIP DIFERENCIAIS ═══ -->
+  <div class="strip">
+    <div class="strip-inner">
+      <div class="strip-item">
+        <div class="strip-icon">📈</div>
+        <div>
+          <div class="strip-label">Foco em Resultados</div>
+          <div class="strip-sub">ROI mensurável em cada ação</div>
+        </div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-icon">🤖</div>
+        <div>
+          <div class="strip-label">IA Integrada</div>
+          <div class="strip-sub">Tecnologia a favor do seu negócio</div>
+        </div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-icon">🎯</div>
+        <div>
+          <div class="strip-label">Estratégia de Vendas</div>
+          <div class="strip-sub">Funis que convertem de verdade</div>
+        </div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-icon">🏆</div>
+        <div>
+          <div class="strip-label">Ímpar no Mercado</div>
+          <div class="strip-sub">Porque ser ímpar é estratégia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MANIFESTO ═══ -->
+  <section class="manifesto">
+    <div class="sec-inner" style="max-width:860px;margin:0 auto;text-align:center">
+      <div class="sec-eyebrow sec-eyebrow-center">Nossa Filosofia</div>
+      <div class="manifesto-quote">
+        <span class="grad-text">ÍMPAR</span> POR NATUREZA.<br>
+        <span class="grad-text">IMPACTO</span> POR ESCOLHA.
+      </div>
+      <div class="manifesto-divider"></div>
+      <p class="manifesto-text">
+        Na Ímpar, ideias não seguem o óbvio. Criamos estratégias que conectam,
+        marcas que se destacam e resultados que deixam marca.
+      </p>
+      <p class="manifesto-bold">Porque ser ímpar não é sorte. É estratégia.</p>
+    </div>
+  </section>
+
+  <!-- ═══ SERVIÇOS ═══ -->
+  <section id="servicos">
+    <div class="sec-inner">
+      <div class="sec-eyebrow">Serviços</div>
+      <h2 class="sec-title">Tudo que sua<br>marca precisa crescer</h2>
+      <p class="sec-desc">
+        Do tráfego pago à identidade visual — entregamos soluções completas
+        e integradas para fazer seu negócio vender mais.
+      </p>
+      <div class="services-grid">
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(124,58,237,.15)">🎯</div>
+          <h3>Tráfego Pago</h3>
+          <p>Gestão de Meta Ads e Google Ads com foco em conversão real e retorno mensurável sobre investimento.</p>
+        </div>
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(217,70,239,.15)">📱</div>
+          <h3>Social Media</h3>
+          <p>Gestão completa das redes sociais: estratégia, conteúdo, calendário editorial e engajamento com sua audiência.</p>
+        </div>
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(124,58,237,.15)">✍️</div>
+          <h3>Criação de Conteúdo</h3>
+          <p>Textos, artes, vídeos e reels que comunicam a essência da sua marca e transformam seguidores em clientes.</p>
+        </div>
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(217,70,239,.15)">🎨</div>
+          <h3>Branding & Identidade</h3>
+          <p>Logo, paleta, tipografia e manual de identidade visual — construímos marcas que se destacam e ficam na memória.</p>
+        </div>
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(124,58,237,.15)">🌐</div>
+          <h3>Sites & Landing Pages</h3>
+          <p>Desenvolvimento de sites e landing pages com design premium, rápidos e otimizados para converter visitantes.</p>
+        </div>
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(217,70,239,.15)">📧</div>
+          <h3>Email & Automação</h3>
+          <p>Sequências de e-mail, nutrição de leads e automações de vendas que trabalham por você no piloto automático.</p>
+        </div>
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(124,58,237,.15)">🔍</div>
+          <h3>SEO & Posicionamento</h3>
+          <p>Estratégia de SEO para ranquear sua empresa no Google e atrair clientes orgânicos de forma consistente.</p>
+        </div>
+        <div class="scard">
+          <div class="scard-icon" style="background:rgba(217,70,239,.15)">📊</div>
+          <h3>Estratégia de Vendas</h3>
+          <p>Construção de funis de vendas digitais integrados com CRM, scripts e automações que convertem mais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ IA ═══ -->
+  <section class="ia-section" id="ia">
+    <div class="ia-inner sec-inner">
+      <div>
+        <div class="ia-badge">✦ Nosso Diferencial</div>
+        <div class="sec-eyebrow">Inteligência Artificial</div>
+        <h2 class="sec-title">Marketing<br>turbinado por <span class="grad-text">IA</span></h2>
+        <p class="sec-desc">
+          Somos uma das poucas agências que integram IA de forma real e estratégica
+          — do planejamento à entrega, acelerando resultados com precisão.
+        </p>
+        <ul class="ia-list">
+          <li><div class="ia-dot"></div>Chatbots com IA para capturar e qualificar leads 24 horas por dia</li>
+          <li><div class="ia-dot"></div>Criação de conteúdo assistida por IA com curadoria e voz humana</li>
+          <li><div class="ia-dot"></div>Análise de dados e insights automáticos para decisões mais rápidas</li>
+          <li><div class="ia-dot"></div>Funis de vendas inteligentes com segmentação dinâmica por comportamento</li>
+          <li><div class="ia-dot"></div>Automação de follow-up e nutrição personalizada de leads</li>
+        </ul>
+      </div>
+      <div class="ia-visual">
+        <div class="ia-visual-title">Resultados com IA</div>
+        <div class="ia-stat-grid">
+          <div class="ia-stat">
+            <div class="ia-stat-num">3×</div>
+            <div class="ia-stat-label">mais leads qualificados</div>
+          </div>
+          <div class="ia-stat">
+            <div class="ia-stat-num">68%</div>
+            <div class="ia-stat-label">redução no custo por lead</div>
+          </div>
+          <div class="ia-stat">
+            <div class="ia-stat-num">24h</div>
+            <div class="ia-stat-label">atendimento automatizado</div>
+          </div>
+          <div class="ia-stat">
+            <div class="ia-stat-num">5×</div>
+            <div class="ia-stat-label">velocidade de entrega</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ RESULTADOS ═══ -->
+  <section class="resultados" id="resultados">
+    <div class="sec-inner">
+      <div class="sec-eyebrow sec-eyebrow-center">Nossos Números</div>
+      <h2 class="sec-title" style="text-align:center">Resultados que<br>falam por si</h2>
+      <div class="num-grid">
+        <div class="num-card">
+          <div class="num-val" data-target="150" data-suffix="+">0</div>
+          <div class="num-label">Clientes atendidos</div>
+        </div>
+        <div class="num-card">
+          <div class="num-val" data-target="3" data-suffix="M+">0</div>
+          <div class="num-label">Em vendas geradas</div>
+        </div>
+        <div class="num-card">
+          <div class="num-val" data-target="98" data-suffix="%">0</div>
+          <div class="num-label">Taxa de satisfação</div>
+        </div>
+        <div class="num-card">
+          <div class="num-val" data-target="5" data-suffix="+">0</div>
+          <div class="num-label">Anos de mercado</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SOBRE / DONA ═══ -->
+  <section class="dona-section" id="sobre">
+    <div class="dona-inner">
+      <div class="dona-photo-wrap">
+        <div class="dona-photo-glow"></div>
+        <div class="dona-frame">
+          <!-- Troque pelo src da foto: <img src="tamara.webp" alt="Tamara Maria"> -->
+          <div class="photo-placeholder">
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>Foto da Tamara</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="dona-tag">✦ Fundadora & CEO</div>
+        <h2 class="dona-name">Tamara<br><span class="grad-text">Maria</span></h2>
+        <div class="dona-title">Estrategista de Marketing & Especialista em IA</div>
+        <p class="dona-bio">
+          Com anos de experiência no mercado digital, Tamara fundou a Ímpar com uma missão clara:
+          transformar negócios através de estratégias que realmente vendem.
+          Apaixonada por dados, funis de alta conversão e pelo poder da inteligência artificial
+          aplicada ao marketing, ela lidera uma equipe focada em resultados.
+        </p>
+        <div class="dona-creds">
+          <div class="dona-cred">
+            <div class="dona-cred-dot"></div>
+            Especialista certificada em Meta Ads e Google Ads
+          </div>
+          <div class="dona-cred">
+            <div class="dona-cred-dot"></div>
+            Especialista em automação e IA aplicada a vendas digitais
+          </div>
+          <div class="dona-cred">
+            <div class="dona-cred-dot"></div>
+            Estrategista de funis de alta conversão
+          </div>
+          <div class="dona-cred">
+            <div class="dona-cred-dot"></div>
+            +150 empresas transformadas com marketing de resultado
+          </div>
+        </div>
+        <a href="https://wa.me/NUMERO_WPP" class="btn-primary" onclick="trackCTA('dona')">
+          Conversar com a Tamara →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DEPOIMENTOS ═══ -->
+  <section>
+    <div class="sec-inner">
+      <div class="sec-eyebrow">Depoimentos</div>
+      <h2 class="sec-title">O que nossos<br>clientes dizem</h2>
+      <div class="testi-grid">
+        <div class="tcard">
+          <div class="tcard-stars">★★★★★</div>
+          <p class="tcard-text">"A Ímpar transformou completamente nossa presença digital. Em 3 meses triplicamos o faturamento com as estratégias de tráfego pago."</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">👩‍💼</div>
+            <div>
+              <div class="tcard-name">Ana Paula S.</div>
+              <div class="tcard-role">CEO · Estética Premium</div>
+            </div>
+          </div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-stars">★★★★★</div>
+          <p class="tcard-text">"O chatbot de IA que implementaram captura leads 24h por dia. Meu time de vendas virou puro fechamento. Resultado incrível."</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">👨‍💻</div>
+            <div>
+              <div class="tcard-name">Ricardo M.</div>
+              <div class="tcard-role">Fundador · Consultoria Jurídica</div>
+            </div>
+          </div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-stars">★★★★★</div>
+          <p class="tcard-text">"Profissionalismo e resultados reais. A estratégia de conteúdo da Ímpar fez nossa marca crescer 400% no Instagram em 6 meses."</p>
+          <div class="tcard-author">
+            <div class="tcard-avatar">👩‍🎨</div>
+            <div>
+              <div class="tcard-name">Mariana L.</div>
+              <div class="tcard-role">Diretora · Academia Fitness</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA FINAL ═══ -->
+  <section class="cta-section">
+    <div class="sec-inner">
+      <div class="sec-eyebrow sec-eyebrow-center">Vamos começar?</div>
+      <h2 class="sec-title">
+        Pronto para ser<br>
+        <span class="grad-text">ímpar</span> no mercado?
+      </h2>
+      <p class="sec-desc">
+        Chame agora no WhatsApp e receba uma análise gratuita
+        da sua presença digital com o caminho para crescer.
+      </p>
+      <a href="https://wa.me/NUMERO_WPP" class="btn-primary" onclick="trackCTA('cta-final')" style="margin:0 auto;display:inline-flex">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Análise gratuita agora
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Í<span class="grad-text">M</span>PAR</div>
+      <div class="footer-copy">© 2025 Ímpar Marketing · Marketing que Gera Impacto</div>
+      <div class="footer-links">
+        <a href="#servicos">Serviços</a>
+        <a href="#ia">IA</a>
+        <a href="#sobre">Sobre</a>
+        <a href="https://wa.me/NUMERO_WPP">Contato</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ FAB WHATSAPP ═══ -->
+  <a href="https://wa.me/NUMERO_WPP" class="fab" aria-label="WhatsApp" onclick="trackCTA('fab')">
+    <svg viewBox="0 0 32 32" fill="white"><path d="M16 3C8.82 3 3 8.82 3 16c0 2.35.65 4.56 1.78 6.45L3 29l6.77-1.76A13 13 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm5.92 16.59c-.25.7-1.47 1.36-2.02 1.44-.5.08-1.16.11-1.87-.12-.43-.14-.99-.32-1.69-.63-2.97-1.28-4.9-4.27-5.05-4.47-.15-.2-1.2-1.6-1.2-3.04s.76-2.16 1.03-2.45c.27-.3.58-.37.78-.37l.56.01c.18 0 .43-.07.67.51.25.59.85 2.09.93 2.24.08.15.13.32.03.5-.1.19-.15.3-.3.47-.16.16-.33.36-.47.48-.16.13-.32.27-.14.54.19.27.81 1.2 1.74 1.94 1.19 1 2.21 1.31 2.53 1.45.32.14.5.12.69-.07.19-.19.78-.91 1-1.24.21-.32.43-.26.72-.16.29.1 1.86.88 2.18 1.04.32.16.54.24.62.37.08.14.08.77-.17 1.46z"/></svg>
+    WhatsApp
+  </a>
+
+  <script>
+    /* ── Counter animation ── */
+    (function() {
+      var ran = false;
+      function runCounters() {
+        if (ran) return; ran = true;
+        document.querySelectorAll('.num-val[data-target]').forEach(function(el) {
+          var target  = parseFloat(el.dataset.target);
+          var suffix  = el.dataset.suffix || '';
+          var decimal = target % 1 !== 0;
+          var start = null; var dur = 2200;
+          function step(ts) {
+            if (!start) start = ts;
+            var p = Math.min((ts - start) / dur, 1);
+            var e = 1 - Math.pow(1 - p, 3);
+            el.textContent = (decimal ? (target * e).toFixed(1) : Math.floor(target * e)) + suffix;
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }
+      var obs = new IntersectionObserver(function(e) {
+        if (e[0].isIntersecting) { runCounters(); obs.disconnect(); }
+      }, { threshold: 0.3 });
+      var s = document.getElementById('resultados');
+      if (s) obs.observe(s);
+    })();
+
+    /* ── CTA tracking ── */
+    function trackCTA(label) {
+      if (typeof fbq !== 'undefined') fbq('track', 'Contact', { content_name: label });
+    }
+  </script>
+</body>
+</html>
